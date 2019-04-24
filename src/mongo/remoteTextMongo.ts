@@ -1,3 +1,4 @@
+const escape = require("lodash/escape")
 import {Collection, MongoClient} from "mongodb"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
 import {RemoteTextDocument} from "../core/remoteTextValue"
@@ -28,6 +29,7 @@ export class RemoteTextMongo {
 
   set mongo(mongo: MongoClient) {
     this._mongo = mongo
+    console.log(this.dbName, this.collectionName)
     this.collection = mongo.db(this.dbName).collection(this.collectionName)
   }
 
@@ -42,7 +44,7 @@ export class RemoteTextMongo {
     }, {
       $set: {
         [`document.${record.id}`]: {
-          html: record.html
+          html: escape(record.html)
         }
       }
     })

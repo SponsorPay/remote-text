@@ -1,24 +1,29 @@
-import {MediumEditor} from "medium-editor"
+import * as MediumEditorBase from "medium-editor"
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 
-export interface ReactMediumEditorProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface MediumEditorProps extends React.HTMLAttributes<HTMLDivElement> {
   onTextChange: (html: string) => void
+  text: string
 }
 
-export class ReactMediumEditor extends React.Component<ReactMediumEditorProps> {
-  medium!: MediumEditor
+export class MediumEditor extends React.Component<MediumEditorProps> {
+  medium!: MediumEditorBase.MediumEditor
 
   componentDidMount() {
     const dom = ReactDOM.findDOMNode(this) as HTMLDivElement
-    this.medium = new MediumEditor(dom)
+    this.medium = new MediumEditorBase(dom)
     this.medium.subscribe("editableInput", () => {
       const {onTextChange} = this.props
       onTextChange && onTextChange(dom.innerHTML)
     })
+    this.medium.setContent(this.props.text)
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: MediumEditorProps) {
+    if (prevProps.text !== this.props.text) {
+      this.medium.setContent(this.props.text)
+    }
     this.medium.restoreSelection()
   }
 
@@ -27,7 +32,7 @@ export class ReactMediumEditor extends React.Component<ReactMediumEditorProps> {
   }
 
   render() {
-    const {onTextChange, ...rest} = this.props
+    const {onTextChange, text, ...rest} = this.props
     return <div {...rest}/>
   }
 }

@@ -20,7 +20,7 @@
     "watch": "tsc -p tsconfig.prod.json -w",
     "coverage": "nyc --extension=.ts --extension=.tsx --include=src/**/*.ts* --all --reporter=html mocha --require=ts-node/register --require source-map-support/register --recursive 'test/**/*.ts*'",
     "check-coverage": "rm -rf .nyc_output && npm run coverage && nyc check-coverage",
-    "publish-local": "npm publish --@revdesk:registry=http://localhost:4873 --force",
+    "publish-local": "npm publish --registry=http://localhost:4873 --force",
     "lint": "tslint {src,test}/**/*.ts*",
     "fix": "npm run lint -- --fix",
     "cd": "standard-version -m \"chore(release): %s [skip ci]\" && git push --follow-tags origin master && npm publish",
@@ -39,6 +39,8 @@
     "mongodb": "*"
   },
   "devDependencies": {
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
     "@types/chai": "^4.1.7",
     "@types/medium-editor": "^5.0.3",
     "@types/mocha": "^5.2.6",

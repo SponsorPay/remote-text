@@ -1,30 +1,25 @@
-import {Observer} from "mobx-react"
 import * as React from "react"
 import {RemoteTextNode, RemoteTextValue} from "../core/remoteTextValue"
-import {RemoteTextStore} from "../store/remoteTextStore"
-import {WithRemoteText} from "./withRemoteText"
+import {MediumEditor} from "./mediumEditor"
+import {withRemoteText, WithRemoteTextContext} from "./withRemoteText"
 
-export interface RemoteTextProps<T extends RemoteTextNode> {
+export interface EditRemoteTextProps<T extends RemoteTextNode> {
   t: (document: T) => RemoteTextValue
-  children: (value: RemoteTextValue) => React.ReactElement<any>
 }
 
-export class RemoteText<T extends RemoteTextNode> extends React.Component<RemoteTextProps<T>> {
+export interface EditRemoteText<T extends RemoteTextNode> extends WithRemoteTextContext<T> {
+
+}
+
+@withRemoteText
+export class EditRemoteText<T extends RemoteTextNode> extends React.Component<EditRemoteTextProps<T>> {
   render() {
-    return <WithRemoteText>
-      {
-        (store: RemoteTextStore<T>) => (
-          <Observer>
-            {
-              () => {
-                const {children, t} = this.props
-                const value = t(store.document)
-                return children(value)
-              }
-            }
-          </Observer>
-        )
+    const {t} = this.props
+    return <MediumEditor
+      text={t(this.remoteTextStore.document).html}
+      onTextChange={
+        html => console.log(html)
       }
-    </WithRemoteText>
+    />
   }
 }

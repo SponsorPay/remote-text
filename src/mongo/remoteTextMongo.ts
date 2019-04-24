@@ -1,4 +1,4 @@
-import escape = require("lodash/escape")
+const escape = require("lodash/escape")
 import {Collection, MongoClient} from "mongodb"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
 import {RemoteTextDocument} from "../core/remoteTextValue"

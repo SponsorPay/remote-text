@@ -1,4 +1,4 @@
-const escape = require("lodash/escape")
+import {sanitize} from "dompurify"
 import {Collection, MongoClient} from "mongodb"
 import {Option} from "tsla-util/lib/option"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
@@ -45,7 +45,7 @@ export class RemoteTextMongo {
     }, {
       $set: {
         [`document.${record.id}`]: {
-          html: escape(record.html)
+          html: sanitize(record.html)
         }
       }
     })

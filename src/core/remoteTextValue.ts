@@ -30,13 +30,16 @@ function isIndexed(e: object): e is Record<string, object> {
 }
 
 function getOverrideChildNode(node: RemoteTextNode, overrideNode: RecordObject, key: string): RecordObject {
-  if (isIndexed (overrideNode) && overrideNode[key] != null) {
+  if (isIndexed(overrideNode) && overrideNode[key] != null) {
     return overrideNode[key]
   }
   return {}
 }
 
-export function parseDocument<T extends RemoteTextNode>(overrides: RecordObject, defaults: T): T {
+export function parseDocument<T extends RemoteTextNode>(
+  overrides: RecordObject,
+  defaults: T
+): T {
   const queue = [[defaults, "", overrides] as [RemoteTextNode, string, RecordObject]]
   while (queue.length) {
     const current = queue.shift()
@@ -60,6 +63,5 @@ export function parseDocument<T extends RemoteTextNode>(overrides: RecordObject,
       }
     }
   }
-  console.log(JSON.stringify(defaults, null, 2))
   return defaults
 }

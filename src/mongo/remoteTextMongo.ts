@@ -9,7 +9,6 @@ export interface RemoteTextSchema {
 }
 
 export interface RemoteTextMongoParams {
-  mongo: MongoClient
   dbName: string
   collectionName: string
 }
@@ -23,7 +22,6 @@ export class RemoteTextMongo {
   collection!: Collection<RemoteTextSchema>
 
   constructor(params: RemoteTextMongoParams) {
-    this.mongo = params.mongo
     this.dbName = params.dbName
     this.collectionName = params.collectionName
   }

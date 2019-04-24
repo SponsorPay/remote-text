@@ -1,5 +1,6 @@
 const escape = require("lodash/escape")
 import {Collection, MongoClient} from "mongodb"
+import {Option} from "tsla-util/lib/option"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
 import {RemoteTextDocument} from "../core/remoteTextValue"
 
@@ -50,7 +51,8 @@ export class RemoteTextMongo {
     })
   }
 
-  getDocument(filter: Partial<RemoteTextSchema> = {}) {
-    return this.collection.findOne(filter)
+  async getDocument(filter: Partial<RemoteTextSchema> = {}) {
+    const value = await this.collection.findOne(filter)
+    return Option.of(value).map(e => e.document).getOrElse({})
   }
 }

@@ -1,0 +1,62 @@
+{
+  "name": "remote-text",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "files": [
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "build": "rm -rf lib && rm -rf es && npm run compile",
+    "ci": "npm run lint && npm run build && npm test && npm version patch",
+    "compile": "npm run compile:cjs && npm run compile:es",
+    "compile:cjs": "tsc -p tsconfig.prod.json",
+    "compile:es": "tsc -p tsconfig.prod.es.json",
+    "test-all": "npm run test && npm run test:es",
+    "test": "npm run test:cjs && npm run test:es",
+    "test:cjs": "mocha 'test/**/*.ts*' --require=ts-node/register --require mocha-clean",
+    "test:es": "export TS_NODE_PROJECT=tsconfig.es.json && mocha 'test/**/*.ts*' --require=ts-node/register --require mocha-clean",
+    "watch": "tsc -p tsconfig.prod.json -w",
+    "coverage": "nyc --extension=.ts --extension=.tsx --include=src/**/*.ts* --all --reporter=html mocha --require=ts-node/register --require source-map-support/register --recursive 'test/**/*.ts*'",
+    "check-coverage": "rm -rf .nyc_output && npm run coverage && nyc check-coverage",
+    "publish-local": "npm publish --@revdesk:registry=http://localhost:4873 --force",
+    "lint": "tslint {src,test}/**/*.ts*",
+    "fix": "npm run lint -- --fix",
+    "cd": "standard-version -m \"chore(release): %s [skip ci]\" && git push --follow-tags origin master && npm publish",
+    "lock": "git add 'package.json' 'package-lock.json' && (git diff-index --quiet HEAD || git commit -m 'Lock')",
+    "codecov": "nyc report --reporter=json --reporter=html && codecov -f coverage/*.json"
+  },
+  "peerDependencies": {
+    "mobx": "*",
+    "mobx-react": "*",
+    "react": "*",
+    "tsla-util": "*"
+  },
+  "optionalDependencies": {
+    "mongodb": "*"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "@types/mongodb": "^3.1.25",
+    "@types/node": "^11.13.7",
+    "@types/react": "^16.8.14",
+    "chai": "^4.2.0",
+    "codecov": "^3.3.0",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.3",
+    "mocha": "^6.1.4",
+    "mocha-clean": "^1.0.0",
+    "nyc": "^14.0.0",
+    "react": "^16.8.6",
+    "standard-version": "^5.0.2",
+    "ts-node": "^8.1.0",
+    "tsla-util": "^0.15.0",
+    "tslib": "^1.9.3",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -3,7 +3,7 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 
 export interface MediumEditorProps extends React.HTMLAttributes<HTMLDivElement> {
-  onTextChange: (html: string) => void
+  onTextChange?: (html: string) => void
   text: string
 }
 

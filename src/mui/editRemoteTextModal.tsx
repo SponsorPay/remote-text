@@ -4,16 +4,19 @@ import Paper, {PaperProps} from "@material-ui/core/Paper"
 import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
 import * as React from "react"
+import {RemoteTextRecord} from "../core/remoteTextRecord"
 import {RemoteTextNode, RemoteTextValue} from "../core/remoteTextValue"
 import {EditRemoteText} from "../react/editRemoteText"
+import {MediumEditor} from "../react/mediumEditor"
 import {RemoteText} from "../react/remoteText"
 import {withRemoteText, WithRemoteTextContext} from "../react/withRemoteText"
 
 export interface EditRemoteTextModalProps<T extends RemoteTextNode> extends Partial<GridProps> {
   t: (document: T) => RemoteTextValue
+  namespace?: string
   children: (value: RemoteTextValue) => React.ReactElement<any>
-  modalProps?: ModalProps
-  paperProps?: PaperProps
+  modalProps?: Partial<ModalProps>
+  paperProps?: Partial<PaperProps>
 }
 
 export interface EditRemoteTextModal<T extends RemoteTextNode> extends WithRemoteTextContext<T> {
@@ -38,6 +41,7 @@ const styles = {
 @withRemoteText
 export class EditRemoteTextModal<T extends RemoteTextNode> extends React.Component<EditRemoteTextModalProps<T>> {
   el = document.createElement('div')
+  mediumEditor: MediumEditor | null = null
 
   state = {
     showEditIcon: false,
@@ -53,6 +57,26 @@ export class EditRemoteTextModal<T extends RemoteTextNode> extends React.Compone
 
   componentWillUnmount() {
     document.body.removeChild(this.el)
+  }
+
+  handleSave = async () => {
+    if (this.mediumEditor != null) {
+      const {t, namespace = "default"} = this.props
+      const html = this.mediumEditor.medium.getContent()
+      await this.remoteTextStore.saveText(
+        new RemoteTextRecord({
+          namespace,
+          lang: "en",
+          html,
+          id: t(this.remoteTextStore.document).id
+        })
+      )
+      this.changeModalOpen(false)
+    }
+  }
+
+  mediumEditorRef = (mediumEditor: MediumEditor) => {
+    this.mediumEditor = mediumEditor
   }
 
   render() {
@@ -79,21 +103,26 @@ export class EditRemoteTextModal<T extends RemoteTextNode> extends React.Compone
         disableBackdropClick
         disableRestoreFocus
         open={modalOpen}
-        onClose={closeModal} {...modalProps}>
+        onClose={closeModal}
+        {...modalProps}
+      >
         <Paper style={styles.modalBody} {...paperProps}>
           <Grid container direction="column" wrap="nowrap">
             <Grid item style={{flex: 1}}>
-              <EditRemoteText t={t}/>
+              <MediumEditor
+                ref={this.mediumEditorRef}
+                text={t(this.remoteTextStore.document).html}
+              />
             </Grid>
-          </Grid>
 
-          <Grid container direction="row" item style={{margin: "8px 4px"}} justify="flex-end">
-            <Button color="primary">
-              Cancel
-            </Button>
-            <Button color="primary">
-              Save
-            </Button>
+            <Grid container direction="row" item style={{margin: "8px 4px"}} justify="flex-end">
+              <Button color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleSave} color="primary">
+                Save
+              </Button>
+            </Grid>
           </Grid>
         </Paper>
       </Modal>

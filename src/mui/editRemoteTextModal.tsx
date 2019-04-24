@@ -39,7 +39,7 @@ const styles = {
 
 @withRemoteText
 export class EditRemoteTextModal<T extends RemoteTextNode> extends React.Component<EditRemoteTextModalProps<T>> {
-  el = document.createElement('div')
+  el = document.createElement("div")
   mediumEditor: MediumEditor | null = null
 
   state = {

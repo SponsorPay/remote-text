@@ -15,7 +15,9 @@ export class MediumEditor extends React.Component<MediumEditorProps> {
     this.medium = new MediumEditorBase(dom)
     this.medium.subscribe("editableInput", () => {
       const {onTextChange} = this.props
-      onTextChange && onTextChange(dom.innerHTML)
+      if (onTextChange != null) {
+        onTextChange(dom.innerHTML)
+      }
     })
     this.medium.setContent(this.props.text)
   }

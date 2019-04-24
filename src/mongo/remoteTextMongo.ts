@@ -1,4 +1,4 @@
-import {sanitize} from "dompurify"
+import * as dompurify from "dompurify"
 import {Collection, MongoClient} from "mongodb"
 import {Option} from "tsla-util/lib/option"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
@@ -45,7 +45,7 @@ export class RemoteTextMongo {
     }, {
       $set: {
         [`document.${record.id}`]: {
-          html: sanitize(record.html)
+          html: dompurify.sanitize(record.html)
         }
       }
     })

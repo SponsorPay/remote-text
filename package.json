@@ -28,6 +28,7 @@
     "codecov": "nyc report --reporter=json --reporter=html && codecov -f coverage/*.json"
   },
   "peerDependencies": {
+    "lodash": "*",
     "mobx": "*",
     "mobx-react": "*",
     "react": "*",

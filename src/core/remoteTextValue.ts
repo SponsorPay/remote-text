@@ -22,11 +22,11 @@ function isObjectRemoteTextValue(e: RecordObject | RemoteTextValue): e is Remote
 }
 
 function isRemoteTextNode(e: RemoteTextNode): e is RemoteTextNode {
-  return typeof e === "object"
+  return e != null && typeof e === "object"
 }
 
 function isIndexed(e: object): e is Record<string, object> {
-  return typeof e === "object"
+  return e != null && typeof e === "object"
 }
 
 function getOverrideChildNode(node: RemoteTextNode, overrideNode: RecordObject, key: string): RecordObject {

@@ -27,4 +27,25 @@ describe("remoteTextValue.test", function () {
       }
     })
   })
+
+  it("should work we null overrides", () => {
+    const defaults = () => ({
+      a: {
+        b: {
+          x: {
+            y: {
+              id: "",
+              html: "Configure App"
+            }
+          },
+          c: {
+            id: "",
+            html: "Configure Placement"
+          }
+        }
+      }
+    })
+    const text = parseDocument(null!, defaults())
+    console.log(text)
+  })
 })

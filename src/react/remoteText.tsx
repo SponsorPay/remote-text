@@ -25,7 +25,6 @@ export class WithRemoteText<T extends RemoteTextNode> extends React.Component<Wi
   }
 }
 
-
 // simple
 
 export interface RemoteTextProps<T extends RemoteTextNode> {

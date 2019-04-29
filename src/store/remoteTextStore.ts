@@ -1,6 +1,8 @@
-import {observable} from "mobx"
+import {observable} from "mobx/lib/api/observable"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
 import {parseDocument, RecordObject, RemoteTextNode} from "../core/remoteTextValue"
+
+const _set = require("lodash/set")
 
 export interface RemoteTextStoreParams<T extends RemoteTextNode> {
   fetch: () => Promise<RecordObject>
@@ -14,7 +16,7 @@ export interface RemoteTextStore<T extends RemoteTextNode> extends RemoteTextSto
 
 export class RemoteTextStore<T extends RemoteTextNode> {
 
-  @observable.ref document: T
+  @observable.deep document: T
 
   constructor(params: RemoteTextStoreParams<T>) {
     this.fetch = params.fetch
@@ -32,6 +34,10 @@ export class RemoteTextStore<T extends RemoteTextNode> {
   }
 
   async saveText(value: RemoteTextRecord) {
+    _set(this.document, value.id, {
+      id: value.id,
+      html: value.html
+    })
     try {
       await this.save(value)
     } catch (e) {

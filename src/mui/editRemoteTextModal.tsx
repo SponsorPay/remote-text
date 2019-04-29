@@ -1,7 +1,7 @@
 import Button from "@material-ui/core/Button"
 import Grid, {GridProps} from "@material-ui/core/Grid"
 import Modal, {ModalProps} from "@material-ui/core/Modal"
-import Paper, {PaperProps} from "@material-ui/core/Paper"
+import Paper from "@material-ui/core/Paper"
 import EditIcon from "@material-ui/icons/Edit"
 import * as React from "react"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
@@ -10,12 +10,17 @@ import {MediumEditor} from "../react/mediumEditor"
 import {RemoteText} from "../react/remoteText"
 import {withRemoteText, WithRemoteTextContext} from "../react/withRemoteText"
 
+declare module "medium-editor" {
+  interface MediumEditor {
+    elements: HTMLElement[]
+  }
+}
+
 export interface EditRemoteTextModalProps<T extends RemoteTextNode> extends Partial<GridProps> {
   t: (document: T) => RemoteTextValue
   namespace?: string
   children: (value: RemoteTextValue) => React.ReactElement<any>
   modalProps?: Partial<ModalProps>
-  paperProps?: Partial<PaperProps>
 }
 
 export interface EditRemoteTextModal<T extends RemoteTextNode> extends WithRemoteTextContext<T> {
@@ -61,16 +66,23 @@ export class EditRemoteTextModal<T extends RemoteTextNode> extends React.Compone
   handleSave = async () => {
     if (this.mediumEditor != null) {
       const {t, namespace = "default"} = this.props
-      const html = this.mediumEditor.medium.getContent()
-      await this.remoteTextStore.saveText(
-        new RemoteTextRecord({
-          namespace,
-          lang: "en",
-          html,
-          id: t(this.remoteTextStore.document).id
-        })
-      )
-      this.changeModalOpen(false)
+      let element = this.mediumEditor.medium.elements[0]
+      if (element != null) {
+        console.log(element.innerHTML)
+        if (element.childElementCount === 1) {
+          element = element.firstElementChild as HTMLElement
+        }
+        const html = element.innerHTML.trim()
+        await this.remoteTextStore.saveText(
+          new RemoteTextRecord({
+            namespace,
+            lang: "en",
+            html,
+            id: t(this.remoteTextStore.document).id
+          })
+        )
+        this.changeModalOpen(false)
+      }
     }
   }
 
@@ -79,51 +91,51 @@ export class EditRemoteTextModal<T extends RemoteTextNode> extends React.Compone
   }
 
   render() {
-    const {t, children, modalProps, paperProps, ...rest} = this.props
+    const {t, children, modalProps, ...rest} = this.props
     const {showEditIcon, modalOpen} = this.state
     const {changeShowEditIcon, changeModalOpen} = this
     const closeModal = () => changeModalOpen(false)
     return <>
-      <Grid container direction="row" wrap="nowrap"
+      <Grid container direction="row" wrap="nowrap" alignItems="center"
             onMouseEnter={() => changeShowEditIcon(true)}
             onMouseLeave={() => changeShowEditIcon(false)}
             {...rest}>
-        <Grid item>
+        <Grid item style={{marginRight: "8px"}}>
           <RemoteText t={t}>{children}</RemoteText>
         </Grid>
         <Grid item>
-          {showEditIcon && <EditIcon onClick={() => changeModalOpen(true)}/>}
+          {showEditIcon &&
+          <EditIcon style={{cursor: "pointer"}} onClick={() => changeModalOpen(true)}/>
+          }
         </Grid>
       </Grid>
 
       <Modal
         disableAutoFocus
         disableEnforceFocus
-        disableBackdropClick
         disableRestoreFocus
         open={modalOpen}
         onClose={closeModal}
         {...modalProps}
       >
-        <Paper style={styles.modalBody} {...paperProps}>
-          <Grid container direction="column" wrap="nowrap">
-            <Grid item style={{flex: 1}}>
-              <MediumEditor
-                ref={this.mediumEditorRef}
-                text={t(this.remoteTextStore.document).html}
-              />
-            </Grid>
-
-            <Grid container direction="row" item style={{margin: "8px 4px"}} justify="flex-end">
-              <Button color="primary">
-                Cancel
-              </Button>
-              <Button onClick={this.handleSave} color="primary">
-                Save
-              </Button>
-            </Grid>
+        <Grid container direction="column" wrap="nowrap" component={Paper} style={styles.modalBody}>
+          <Grid container direction="column" item style={{flex: 1}}>
+            <MediumEditor
+              style={{flex: 1}}
+              ref={this.mediumEditorRef}
+              text={t(this.remoteTextStore.document).html}
+            />
           </Grid>
-        </Paper>
+
+          <Grid item container direction="row" style={{margin: "8px 4px"}} justify="flex-end">
+            <Button color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleSave} color="primary">
+              Save
+            </Button>
+          </Grid>
+        </Grid>
       </Modal>
     </>
   }

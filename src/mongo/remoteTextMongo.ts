@@ -1,8 +1,10 @@
-import * as dompurify from "dompurify"
 import {Collection, MongoClient} from "mongodb"
+import * as sanitizeHtml from "sanitize-html"
 import {Option} from "tsla-util/lib/option"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
 import {RemoteTextDocument} from "../core/remoteTextValue"
+
+const allowedTags = sanitizeHtml.defaults.allowedTags.filter(e => e !== "iframe")
 
 export interface RemoteTextSchema {
   namespace: string
@@ -45,7 +47,9 @@ export class RemoteTextMongo {
     }, {
       $set: {
         [`document.${record.id}`]: {
-          html: dompurify.sanitize(record.html)
+          html: sanitizeHtml(record.html, {
+            allowedTags
+          })
         }
       }
     })

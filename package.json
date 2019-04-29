@@ -35,7 +35,7 @@
     "react-dom": "*",
     "tsla-util": "*",
     "medium-editor": "*",
-    "sanitize-html":  "*"
+    "sanitize-html": "*"
   },
   "optionalDependencies": {
     "mongodb": "*"

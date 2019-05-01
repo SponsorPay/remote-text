@@ -1,4 +1,4 @@
-import {observable} from "mobx/lib/api/observable"
+import {observable} from "mobx"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
 import {parseDocument, RecordObject, RemoteTextNode} from "../core/remoteTextValue"
 
@@ -25,12 +25,13 @@ export class RemoteTextStore<T extends RemoteTextNode> {
   }
 
   async loadDocument() {
+    let overrides = {}
     try {
-      const raw = await this.fetch()
-      this.document = parseDocument(raw, this.document)
+      overrides = await this.fetch()
     } catch (e) {
       console.error(e)
     }
+    this.document = parseDocument(overrides, this.document)
   }
 
   async saveText(value: RemoteTextRecord) {

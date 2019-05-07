@@ -15,9 +15,7 @@ export interface WithRemoteTextProps<T extends RemoteTextNode> {
 }
 
 export class WithRemoteText<T extends RemoteTextNode> extends React.Component<WithRemoteTextProps<T>> {
-  context!: {
-    remoteTextStore: RemoteTextStore<T>
-  }
+  context!: WithRemoteTextContext<T>
 
   get [STORE_GETTER_KEY]() {
     return this.context.remoteTextStore

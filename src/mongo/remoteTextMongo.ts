@@ -51,6 +51,8 @@ export class RemoteTextMongo {
           })
         }
       }
+    }, {
+      upsert: true
     })
   }
 

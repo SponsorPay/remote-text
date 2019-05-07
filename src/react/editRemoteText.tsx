@@ -17,9 +17,6 @@ export class EditRemoteText<T extends RemoteTextNode> extends React.Component<Ed
     const {t} = this.props
     return <MediumEditor
       text={t(this.remoteTextStore.document).html}
-      onTextChange={
-        html => console.log(html)
-      }
     />
   }
 }

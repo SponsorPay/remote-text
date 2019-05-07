@@ -32,7 +32,6 @@ export class RemoteTextMongo {
 
   set mongo(mongo: MongoClient) {
     this._mongo = mongo
-    console.log(this.dbName, this.collectionName)
     this.collection = mongo.db(this.dbName).collection(this.collectionName)
   }
 

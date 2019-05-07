@@ -20,7 +20,6 @@ export interface EditRemoteTextModal<T extends RemoteTextNode> extends WithRemot
 
 }
 
-
 @withRemoteText
 export class EditRemoteTextModal<T extends RemoteTextNode> extends React.Component<EditRemoteTextModalProps<T>> {
   state = {

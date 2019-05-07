@@ -16,7 +16,7 @@ declare module "medium-editor" {
   }
 }
 
-export interface EditModalProps<T extends RemoteTextNode>  {
+export interface EditModalProps<T extends RemoteTextNode> {
   t: (document: T) => RemoteTextValue
   namespace?: string
   modalProps?: Partial<ModalProps>
@@ -55,7 +55,9 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
   changeModalOpen = (modalOpen: boolean) => {
     this.setState({modalOpen}, () => {
       const {onModalOpen} = this.props
-      onModalOpen && onModalOpen(this.state.modalOpen)
+      if (onModalOpen != null) {
+        onModalOpen(this.state.modalOpen)
+      }
     })
   }
 

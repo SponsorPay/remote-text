@@ -1,3 +1,4 @@
+import {Context} from "react"
 import * as React from "react"
 import {ComponentClass} from "react"
 import {RemoteTextNode} from "../core/remoteTextValue"
@@ -14,9 +15,7 @@ export interface WithRemoteTextProps<T extends RemoteTextNode> {
 }
 
 export class WithRemoteText<T extends RemoteTextNode> extends React.Component<WithRemoteTextProps<T>> {
-  context!: {
-    remoteTextStore: RemoteTextStore<T>
-  }
+  context!: WithRemoteTextContext<T>
 
   get [STORE_GETTER_KEY]() {
     return this.context.remoteTextStore

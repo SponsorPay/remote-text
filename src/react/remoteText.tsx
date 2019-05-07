@@ -1,4 +1,4 @@
-import {Observer} from "mobx-react"
+import {observer} from "mobx-react"
 import * as React from "react"
 import {RemoteTextNode, RemoteTextValue} from "../core/remoteTextValue"
 import {withRemoteText, WithRemoteTextContext} from "./withRemoteText"
@@ -11,17 +11,12 @@ export interface RemoteTextProps<T extends RemoteTextNode> {
 export interface RemoteText<T extends RemoteTextNode> extends WithRemoteTextContext<T> {
 }
 
+@observer
 @withRemoteText
 export class RemoteText<T extends RemoteTextNode> extends React.Component<RemoteTextProps<T>> {
   render() {
-    return <Observer>
-      {
-        () => {
-          const {children, t} = this.props
-          const value = t(this.remoteTextStore.document)
-          return children(value)
-        }
-      }
-    </Observer>
+    const {children, t} = this.props
+    const value = t(this.remoteTextStore.document)
+    return children(value)
   }
 }

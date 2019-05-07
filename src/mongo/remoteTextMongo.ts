@@ -59,4 +59,5 @@ export class RemoteTextMongo {
     const value = await this.collection.findOne(filter)
     return Option.of(value).map(e => e.document).getOrElse({})
   }
+
 }

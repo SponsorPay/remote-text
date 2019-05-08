@@ -1,8 +1,8 @@
-import {Context} from "react"
 import * as React from "react"
 import {ComponentClass} from "react"
 import {RemoteTextNode} from "../core/remoteTextValue"
 import {RemoteTextStore} from "../store/remoteTextStore"
+import * as assert from "assert"
 
 const STORE_GETTER_KEY = "remoteTextStore"
 
@@ -28,6 +28,7 @@ export class WithRemoteText<T extends RemoteTextNode> extends React.Component<Wi
 
 export function withRemoteText(ComponentClass: ComponentClass<any, any>) {
   ComponentClass.contextType = WithRemoteText.contextType
+  assert(WithRemoteText.contextType != null)
   Object.defineProperty(
     ComponentClass.prototype,
     STORE_GETTER_KEY,

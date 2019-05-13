@@ -2,8 +2,6 @@ import Button from "@material-ui/core/Button"
 import Grid from "@material-ui/core/Grid"
 import Modal, {ModalProps} from "@material-ui/core/Modal"
 import Paper from "@material-ui/core/Paper"
-import {SvgIconProps} from "@material-ui/core/SvgIcon"
-import EditIcon from "@material-ui/icons/Edit"
 import * as React from "react"
 import {RemoteTextRecord} from "../core/remoteTextRecord"
 import {RemoteTextNode, RemoteTextValue} from "../core/remoteTextValue"
@@ -16,12 +14,10 @@ declare module "medium-editor" {
   }
 }
 
-export interface EditModalProps<T extends RemoteTextNode> {
+export interface EditModalProps<T extends RemoteTextNode> extends ModalProps {
   t: (document: T) => RemoteTextValue
   namespace?: string
-  modalProps?: Partial<ModalProps>
-  onModalOpen?: (open: boolean) => any
-  editIconProps?: SvgIconProps
+  onSave?: () => any
 }
 
 export interface EditModal<T extends RemoteTextNode> extends WithRemoteTextContext<T> {
@@ -48,19 +44,6 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
   el = document.createElement("div")
   mediumEditor: MediumEditor | null = null
 
-  state = {
-    modalOpen: false
-  }
-
-  changeModalOpen = (modalOpen: boolean) => {
-    this.setState({modalOpen}, () => {
-      const {onModalOpen} = this.props
-      if (onModalOpen != null) {
-        onModalOpen(this.state.modalOpen)
-      }
-    })
-  }
-
   componentDidMount() {
     document.body.appendChild(this.el)
   }
@@ -86,7 +69,10 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
             id: t(this.remoteTextStore.document).id
           })
         )
-        this.changeModalOpen(false)
+        const {onSave} = this.props
+        if (onSave != null) {
+          onSave()
+        }
       }
     }
   }
@@ -96,40 +82,32 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
   }
 
   render() {
-    const {t, modalProps, editIconProps, onModalOpen, namespace} = this.props
-    const {modalOpen} = this.state
-    const closeModal = () => this.changeModalOpen(false)
+    const {t, namespace, ...rest} = this.props
 
-    return <>
-      <EditIcon style={{cursor: "pointer"}} onClick={() => this.changeModalOpen(true)} {...editIconProps}/>
-
-      <Modal
-        disableAutoFocus
-        disableEnforceFocus
-        disableRestoreFocus
-        open={modalOpen}
-        onClose={closeModal}
-        {...modalProps}
-      >
-        <Grid container direction="column" wrap="nowrap" component={Paper} style={styles.modalBody}>
-          <Grid container direction="column" item style={{flex: 1}}>
-            <MediumEditor
-              style={{flex: 1}}
-              ref={this.mediumEditorRef}
-              text={t(this.remoteTextStore.document).html}
-            />
-          </Grid>
-
-          <Grid item container direction="row" style={{margin: "8px 4px"}} justify="flex-end">
-            <Button color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleSave} color="primary">
-              Save
-            </Button>
-          </Grid>
+    return <Modal
+      disableAutoFocus
+      disableEnforceFocus
+      disableRestoreFocus
+      {...rest}
+    >
+      <Grid container direction="column" wrap="nowrap" component={Paper} style={styles.modalBody}>
+        <Grid container direction="column" item style={{flex: 1}}>
+          <MediumEditor
+            style={{flex: 1}}
+            ref={this.mediumEditorRef}
+            text={t(this.remoteTextStore.document).html}
+          />
         </Grid>
-      </Modal>
-    </>
+
+        <Grid item container direction="row" style={{margin: "8px 4px"}} justify="flex-end">
+          <Button color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.handleSave} color="primary">
+            Save
+          </Button>
+        </Grid>
+      </Grid>
+    </Modal>
   }
 }

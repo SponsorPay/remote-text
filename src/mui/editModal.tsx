@@ -82,7 +82,7 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
   }
 
   render() {
-    const {t, namespace, ...rest} = this.props
+    const {t, namespace, onSave, ...rest} = this.props
 
     return <Modal
       disableAutoFocus

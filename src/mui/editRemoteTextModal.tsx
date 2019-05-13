@@ -5,14 +5,15 @@ import * as React from "react"
 import {RemoteTextNode, RemoteTextValue} from "../core/remoteTextValue"
 import {RemoteText} from "../react/remoteText"
 import {withRemoteText, WithRemoteTextContext} from "../react/withRemoteText"
-import {EditModal} from "./editModal"
+import {EditModal, EditModalProps} from "./editModal"
+import {EditModalButton} from "./editModalButton"
 
 export interface EditRemoteTextModalProps<T extends RemoteTextNode> extends Partial<GridProps> {
   t: (document: T) => RemoteTextValue
   namespace?: string
   children: (value: RemoteTextValue) => React.ReactElement<any>
   editIconProps?: SvgIconProps
-  modalProps?: Partial<ModalProps>
+  editModalProps?: Partial<EditModalProps<T>>
   onModalOpen?: (open: boolean) => any
 }
 
@@ -29,7 +30,7 @@ export class EditRemoteTextModal<T extends RemoteTextNode> extends React.Compone
   changeShowEditIcon = (showEditIcon: boolean) => this.setState({showEditIcon})
 
   render() {
-    const {t, children, modalProps, onModalOpen, namespace, editIconProps, ...rest} = this.props
+    const {t, children, editModalProps, onModalOpen, namespace, editIconProps, ...rest} = this.props
     const {showEditIcon} = this.state
     return <>
       <Grid container direction="row" wrap="nowrap" alignItems="center"
@@ -39,7 +40,8 @@ export class EditRemoteTextModal<T extends RemoteTextNode> extends React.Compone
           <RemoteText t={t}>{children}</RemoteText>
         </Grid>
         <Grid item>
-          {showEditIcon && <EditModal t={t} modalProps={modalProps} onModalOpen={onModalOpen} namespace={namespace}/>}
+          {showEditIcon &&
+          <EditModalButton t={t} editModalProps={editModalProps} onModalOpen={onModalOpen} namespace={namespace}/>}
         </Grid>
       </Grid>
     </>

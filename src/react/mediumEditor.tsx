@@ -16,7 +16,21 @@ export class MediumEditor extends React.Component<MediumEditorProps> {
       paste: {
         forcePlainText: false
       },
-      targetBlank: true
+      targetBlank: true,
+      toolbar: {
+        allowMultiParagraphSelection: true,
+        buttons: ["bold", "italic", "underline", "anchor", "h1", "h2", "h3", "h4", "h5", "h6", "quote"],
+        diffLeft: 0,
+        diffTop: -10,
+        firstButtonClass: "medium-editor-button-first",
+        lastButtonClass: "medium-editor-button-last",
+        relativeContainer: null!,
+        standardizeSelectionStart: false,
+        static: false,
+        align: "center",
+        sticky: false,
+        updateOnEmptySelection: false
+      }
     })
     this.medium.subscribe("editableInput", () => {
       const {onTextChange} = this.props

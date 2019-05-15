@@ -58,7 +58,7 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
       const {t, namespace = "default"} = this.props
       let element = this.mediumEditor.medium.elements[0]
       if (element != null) {
-        if (element.childElementCount === 1) {
+        if (element.childElementCount === 1 && element.tagName === "p") {
           element = element.firstElementChild as HTMLElement
         }
         const html = element.innerHTML.trim()

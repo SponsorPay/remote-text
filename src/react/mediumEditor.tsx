@@ -15,7 +15,8 @@ export class MediumEditor extends React.Component<MediumEditorProps> {
     this.medium = new MediumEditorBase(dom, {
       paste: {
         forcePlainText: false
-      }
+      },
+      targetBlank: true
     })
     this.medium.subscribe("editableInput", () => {
       const {onTextChange} = this.props

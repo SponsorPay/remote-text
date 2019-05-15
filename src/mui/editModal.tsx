@@ -18,6 +18,7 @@ export interface EditModalProps<T extends RemoteTextNode> extends ModalProps {
   t: (document: T) => RemoteTextValue
   namespace?: string
   onSave?: () => any
+  onCancel?: () => any
 }
 
 export interface EditModal<T extends RemoteTextNode> extends WithRemoteTextContext<T> {
@@ -82,7 +83,7 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
   }
 
   render() {
-    const {t, namespace, onSave, ...rest} = this.props
+    const {t, namespace, onSave, onCancel, ...rest} = this.props
 
     return <Modal
       disableAutoFocus
@@ -100,7 +101,7 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
         </Grid>
 
         <Grid item container direction="row" style={{margin: "8px 4px"}} justify="flex-end">
-          <Button color="primary">
+          <Button color="primary" onClick={onCancel}>
             Cancel
           </Button>
           <Button onClick={this.handleSave} color="primary">

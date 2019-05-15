@@ -39,7 +39,8 @@ export class EditModalButton<T extends RemoteTextNode> extends React.Component<E
     return <>
       <EditIcon style={{cursor: "pointer"}} onClick={() => this.changeModalOpen(true)} {...editIconProps}/>
 
-      <EditModal t={t} open={modalOpen} onClose={closeModal} onSave={closeModal}
+      <EditModal t={t} open={modalOpen} onClose={closeModal}
+                 onSave={closeModal} onCancel={closeModal}
                  namespace={namespace} {...editModalProps}/>
     </>
   }

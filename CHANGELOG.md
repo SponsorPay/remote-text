@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.3](https://github.com/SponsorPay/remote-text/compare/v1.3.2...v1.3.3) (2019-05-15)
+
+
+### Bug Fixes
+
+* single child p element ([7df805d](https://github.com/SponsorPay/remote-text/commit/7df805d))
+
+
+
 ## [1.3.2](https://github.com/SponsorPay/remote-text/compare/v1.3.1...v1.3.2) (2019-05-15)
 
 

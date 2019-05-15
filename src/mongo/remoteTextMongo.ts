@@ -6,6 +6,14 @@ import {RemoteTextDocument} from "../core/remoteTextValue"
 
 const allowedTags = sanitizeHtml.defaults.allowedTags.filter(e => e !== "iframe")
 
+const allowedAttributes = {
+  a: ["href", "name", "target", "style"],
+  img: ["src"],
+  p: ["style"],
+  span: ["style"],
+  div: ["style"]
+}
+
 export interface RemoteTextSchema {
   namespace: string
   lang: string
@@ -47,7 +55,8 @@ export class RemoteTextMongo {
       $set: {
         [`document.${record.id}`]: {
           html: sanitizeHtml(record.html, {
-            allowedTags
+            allowedTags,
+            allowedAttributes
           })
         }
       }

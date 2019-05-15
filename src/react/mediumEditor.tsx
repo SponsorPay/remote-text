@@ -19,7 +19,16 @@ export class MediumEditor extends React.Component<MediumEditorProps> {
       targetBlank: true,
       toolbar: {
         allowMultiParagraphSelection: true,
-        buttons: ["bold", "italic", "underline", "anchor", "h1", "h2", "h3", "h4", "h5", "h6", "quote"],
+        buttons: [
+          "bold", "italic", "underline", "anchor", "quote",
+          ...["h1", "h2", "h3", "h4", "h5", "h6"].map(h => ({
+            name: h,
+            tagNames: [h],
+            attrs: {
+              style: "margin: 0"
+            }
+          }))
+        ],
         diffLeft: 0,
         diffTop: -10,
         firstButtonClass: "medium-editor-button-first",

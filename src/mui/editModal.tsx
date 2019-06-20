@@ -36,7 +36,11 @@ const styles = {
     position: "absolute",
     top: 0, left: 0, right: 0, bottom: 0,
     padding: "16px",
-    overflow: "auto"
+  } as React.CSSProperties,
+  editor: {
+    flex: 1,
+    overflow: "auto",
+    wordBreak: "break-all"
   } as React.CSSProperties
 }
 
@@ -92,7 +96,7 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
       {...rest}
     >
       <Grid container direction="column" wrap="nowrap" component={Paper} style={styles.modalBody}>
-        <Grid container direction="column" item style={{flex: 1}}>
+        <Grid container direction="column" item style={styles.editor}>
           <MediumEditor
             style={{flex: 1}}
             ref={this.mediumEditorRef}

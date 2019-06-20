@@ -96,7 +96,7 @@ export class EditModal<T extends RemoteTextNode> extends React.Component<EditMod
       {...rest}
     >
       <Grid container direction="column" wrap="nowrap" component={Paper} style={styles.modalBody}>
-        <Grid container direction="column" item style={{}}>
+        <Grid container direction="column" item style={styles.editor}>
           <MediumEditor
             style={{flex: 1}}
             ref={this.mediumEditorRef}

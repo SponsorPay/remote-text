@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.7](https://github.com/SponsorPay/remote-text/compare/v1.3.6...v1.3.7) (2019-06-20)
+
+
+### Bug Fixes
+
+* editModal layout ([#8](https://github.com/SponsorPay/remote-text/issues/8)) ([26cd044](https://github.com/SponsorPay/remote-text/commit/26cd044))
+
+
+
 ## [1.3.6](https://github.com/SponsorPay/remote-text/compare/v1.3.5...v1.3.6) (2019-05-16)
 
 

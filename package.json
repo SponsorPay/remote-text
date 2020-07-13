@@ -64,7 +64,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "sanitize-html": "^1.20.1",
-    "standard-version": "^5.0.2",
+    "standard-version": "^8.0.1",
     "ts-node": "^8.1.0",
     "tsla-util": "^0.15.0",
     "tslib": "^1.9.3",
